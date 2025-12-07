@@ -7,8 +7,6 @@
     "allowImportingTsExtensions": true,
     "types": ["node"],
     "skipLibCheck": true,
-    "lib": ["esnext"],
-    "noEmit": true,
     "outDir": "dist"
   },
   "include": ["src/**/*", "vitest.config.ts"]

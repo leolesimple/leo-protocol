@@ -50,30 +50,30 @@ export type LeoMessage =
   | PutAck
   | ErrorMessage
 
-export function encodeJsonLine(value: unknown): NodeBuffer {
-  return Buffer.from(JSON.stringify(value) + "\n") as NodeBuffer
+export function encodeJsonLine(value: unknown): Buffer {
+  return Buffer.from(JSON.stringify(value) + "\n")
 }
 
 export function decodeJsonLine(line: string): unknown {
   return JSON.parse(line)
 }
 
-export function encodeFrame(payload: NodeBuffer): NodeBuffer {
+export function encodeFrame(payload: Buffer): Buffer {
   const length = Buffer.alloc(4)
   length.writeUInt32BE(payload.length, 0)
-  return Buffer.concat([length, payload]) as NodeBuffer
+  return Buffer.concat([length, payload])
 }
 
-export function consumeFrames(buffer: NodeBuffer): { frames: NodeBuffer[]; remaining: NodeBuffer } {
+export function consumeFrames(buffer: Buffer): { frames: Buffer[]; remaining: Buffer } {
   let offset = 0
-  const frames: NodeBuffer[] = []
+  const frames: Buffer[] = []
   while (buffer.length - offset >= 4) {
     const length = buffer.readUInt32BE(offset)
     if (buffer.length - offset - 4 < length) break
     const start = offset + 4
     const end = start + length
-    frames.push(buffer.subarray(start, end) as NodeBuffer)
+    frames.push(buffer.subarray(start, end))
     offset = end
   }
-  return { frames, remaining: buffer.subarray(offset) as NodeBuffer }
+  return { frames, remaining: buffer.subarray(offset) }
 }
