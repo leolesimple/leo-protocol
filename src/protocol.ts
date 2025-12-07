@@ -1,3 +1,5 @@
+export type NodeBuffer = Buffer<ArrayBufferLike>
+
 export type ClientHello = {
   type: "CLIENT_HELLO"
   version: 1

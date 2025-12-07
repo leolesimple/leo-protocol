@@ -9,6 +9,7 @@ LEO est un protocole applicatif sécurisé au-dessus de TCP pour transférer, sy
 - Commandes AUTH, PUT, GET, LIST et BYE.
 - Stockage disque avec validation de chemin pour éviter les échappements.
 - Client CLI pour upload, download et listing; utilitaire de synchronisation récursive.
+- Client graphique Electron pour naviguer et transférer les fichiers.
 - Tests unitaires et d'intégration avec Vitest.
 
 ## Prérequis
@@ -81,6 +82,21 @@ node --loader ts-node/esm -e "import { LeoClient } from './src/client/client.ts'
 npm test
 ```
 Les tests couvrent la crypto X25519/HKDF, AES-GCM, le framing JSON, ainsi que des intégrations handshake, AUTH, PUT/GET et LIST sur un serveur démarré en mémoire.
+
+## Client graphique Electron
+Le client GUI fournit une interface proche d'un client SFTP pour piloter le protocole LEO.
+
+### Démarrage
+```bash
+npm run desktop
+```
+
+### Flux d'utilisation
+- Renseigner l'hôte, le port et les identifiants puis cliquer sur Se connecter.
+- Utiliser Listing pour parcourir les répertoires distants.
+- Utiliser Upload pour choisir un fichier local et saisir le chemin distant.
+- Utiliser Download pour définir le chemin distant et sélectionner une destination locale.
+- Cliquer sur Déconnexion pour envoyer BYE et fermer la session chiffrée.
 
 ## Structure du projet
 - `src/crypto.ts` génération de clés X25519 et dérivation HKDF
