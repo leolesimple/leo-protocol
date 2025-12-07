@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LEO Desktop</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #0f172a; color: #e2e8f0; }
+    header { padding: 16px; background: #1e293b; font-size: 20px; font-weight: 700; }
+    main { padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    section { background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+    input, button, select { padding: 8px; border-radius: 6px; border: 1px solid #334155; background: #0b1220; color: #e2e8f0; }
+    button { cursor: pointer; background: #2563eb; border: none; color: #fff; font-weight: 600; }
+    button:disabled { background: #334155; cursor: not-allowed; }
+    .row { display: flex; gap: 8px; align-items: center; }
+    .full { width: 100%; }
+    .list { max-height: 300px; overflow: auto; border: 1px solid #1f2937; border-radius: 6px; padding: 8px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 6px; border-bottom: 1px solid #1f2937; text-align: left; }
+    #log { min-height: 120px; background: #0b1220; border: 1px solid #1f2937; border-radius: 6px; padding: 8px; font-family: monospace; white-space: pre-wrap; }
+    footer { padding: 12px 16px; background: #0b1220; font-size: 13px; color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <header>LEO Desktop</header>
+  <main>
+    <section>
+      <h2>Connexion</h2>
+      <form id="connect-form">
+        <div class="row">
+          <label class="full">Hôte<input id="host" name="host" value="127.0.0.1"></label>
+          <label>Port<input id="port" name="port" type="number" value="9000"></label>
+        </div>
+        <div class="row">
+          <label class="full">Utilisateur<input id="username" name="username" value="user"></label>
+          <label class="full">Mot de passe<input id="password" name="password" type="password" value="pass"></label>
+        </div>
+        <button type="submit" id="connect-btn">Se connecter</button>
+      </form>
+      <div id="status"></div>
+    </section>
+    <section>
+      <h2>Listing</h2>
+      <div class="row">
+        <input id="list-path" class="full" value=".">
+        <button id="list-btn">Lister</button>
+      </div>
+      <div class="list">
+        <table id="list-table">
+          <thead><tr><th>Nom</th><th>Type</th><th>Taille</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+    <section>
+      <h2>Upload</h2>
+      <div class="row">
+        <input id="upload-local" class="full" placeholder="Fichier local">
+        <button id="choose-upload">Choisir</button>
+      </div>
+      <input id="upload-remote" class="full" placeholder="Chemin distant">
+      <button id="upload-btn">Envoyer</button>
+    </section>
+    <section>
+      <h2>Download</h2>
+      <input id="download-remote" class="full" placeholder="Chemin distant">
+      <div class="row">
+        <input id="download-local" class="full" placeholder="Destination locale">
+        <button id="choose-download">Choisir</button>
+      </div>
+      <button id="download-btn">Télécharger</button>
+    </section>
+    <section style="grid-column: 1 / span 2;">
+      <h2>Journal</h2>
+      <div id="log"></div>
+      <button id="bye-btn">Déconnexion</button>
+    </section>
+  </main>
+  <footer>LEO sur TCP avec X25519, AES-256-GCM et commandes AUTH, PUT, GET, LIST, BYE.</footer>
+  <script type="module" src="./renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "leo-protocol",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "server": "node --loader ts-node/esm src/server/server.ts",
+    "client": "node --loader ts-node/esm src/client/client.ts",
+    "desktop": "electron --loader ts-node/esm src/desktop/main.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "electron": "^31.6.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "vitest": "^1.3.1"
+  }
+}
