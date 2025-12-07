@@ -3,11 +3,11 @@ import { readFile, writeFile, mkdir } from "fs/promises"
 import path from "path"
 import { createX25519KeyPair, computeSharedSecret, deriveSessionKeys } from "../crypto.ts"
 import { encryptAesGcm, decryptAesGcm } from "../cipher.ts"
-import { AuthCommand, Bye, ClientHello, GetBegin, GetChunk, GetEnd, GetMeta, LeoMessage, List, ListResult, PutAck, encodeFrame, encodeJsonLine, consumeFrames } from "../protocol.ts"
+import { AuthCommand, Bye, ClientHello, GetBegin, GetChunk, GetEnd, GetMeta, LeoMessage, List, ListResult, NodeBuffer, PutAck, encodeFrame, encodeJsonLine, consumeFrames } from "../protocol.ts"
 
 class LeoClient {
   private socket: net.Socket | null = null
-  private frameBuffer = Buffer.alloc(0)
+  private frameBuffer: NodeBuffer = Buffer.alloc(0)
   private handshakeBuffer = ""
   private clientKeyPair = createX25519KeyPair()
   private clientToServerKey: Buffer | null = null

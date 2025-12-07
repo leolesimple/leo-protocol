@@ -1,4 +1,4 @@
-export type NodeBuffer = Buffer<ArrayBufferLike>
+export type NodeBuffer = Buffer
 
 export type ClientHello = {
   type: "CLIENT_HELLO"
@@ -50,7 +50,7 @@ export type LeoMessage =
   | PutAck
   | ErrorMessage
 
-export function encodeJsonLine(value: unknown): Buffer {
+export function encodeJsonLine(value: unknown): NodeBuffer {
   return Buffer.from(JSON.stringify(value) + "\n")
 }
 
@@ -58,15 +58,15 @@ export function decodeJsonLine(line: string): unknown {
   return JSON.parse(line)
 }
 
-export function encodeFrame(payload: Buffer): Buffer {
+export function encodeFrame(payload: NodeBuffer): NodeBuffer {
   const length = Buffer.alloc(4)
   length.writeUInt32BE(payload.length, 0)
   return Buffer.concat([length, payload])
 }
 
-export function consumeFrames(buffer: Buffer): { frames: Buffer[]; remaining: Buffer } {
+export function consumeFrames(buffer: NodeBuffer): { frames: NodeBuffer[]; remaining: NodeBuffer } {
   let offset = 0
-  const frames: Buffer[] = []
+  const frames: NodeBuffer[] = []
   while (buffer.length - offset >= 4) {
     const length = buffer.readUInt32BE(offset)
     if (buffer.length - offset - 4 < length) break

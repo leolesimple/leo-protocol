@@ -2,14 +2,14 @@ import net from "net"
 import { randomBytes } from "crypto"
 import { encryptAesGcm, decryptAesGcm } from "../cipher.ts"
 import { createX25519KeyPair, computeSharedSecret, deriveSessionKeys } from "../crypto.ts"
-import { AuthCommand, Bye, ClientHello, LeoMessage, ServerHello, encodeFrame, encodeJsonLine, consumeFrames, decodeJsonLine } from "../protocol.ts"
+import { AuthCommand, Bye, ClientHello, LeoMessage, NodeBuffer, ServerHello, encodeFrame, encodeJsonLine, consumeFrames, decodeJsonLine } from "../protocol.ts"
 import { Storage } from "./storage.ts"
 
 type Credentials = { username: string; password: string }
 
 export class LeoSession {
   private handshakeBuffer = ""
-  private frameBuffer = Buffer.alloc(0)
+  private frameBuffer: NodeBuffer = Buffer.alloc(0)
   private handshakeComplete = false
   private authed = false
   private clientToServerKey: Buffer | null = null
