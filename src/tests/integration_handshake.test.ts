@@ -26,16 +26,14 @@ describe("handshake and auth", () => {
   it("completes handshake and auth", async () => {
     const client = new LeoClient()
     await client.connect("127.0.0.1", port)
-    const ok = await client.auth("user", "pass")
-    expect(ok).toBe(true)
+    await client.auth("user", "pass")
     await client.bye()
   })
 
   it("rejects invalid credentials", async () => {
     const client = new LeoClient()
     await client.connect("127.0.0.1", port)
-    const ok = await client.auth("user", "wrong")
-    expect(ok).toBe(false)
+    await expect(client.auth("user", "wrong")).rejects.toThrow()
     await client.bye()
   })
 })

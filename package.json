@@ -8,7 +8,6 @@
     "server": "node --loader ts-node/esm src/server/server.ts",
     "client": "node --loader ts-node/esm src/client/client.ts",
     "desktop": "electron --loader ts-node/esm src/desktop/main.ts"
-    "client": "node --loader ts-node/esm src/client/client.ts"
   },
   "dependencies": {},
   "devDependencies": {

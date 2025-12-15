@@ -29,8 +29,7 @@ describe("file transfer", () => {
   it("uploads, lists, downloads, and ends", async () => {
     const client = new LeoClient()
     await client.connect("127.0.0.1", port)
-    const ok = await client.auth("user", "pass")
-    expect(ok).toBe(true)
+    await client.auth("user", "pass")
     const localPath = path.join(localDir, "file.txt")
     const content = Buffer.from("hello leo")
     await writeFile(localPath, content)

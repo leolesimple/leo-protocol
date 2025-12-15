@@ -33,6 +33,7 @@ Variables supportées :
 - `LEO_STORAGE` chemin racine de stockage (défaut `./data` depuis le cwd)
 - `LEO_USER` nom d'utilisateur pour AUTH (défaut `user`)
 - `LEO_PASS` mot de passe pour AUTH (défaut `pass`)
+- `LEO_TIMEOUT_MS` (optionnel) délai d'attente des réponses côté client (défaut 15000 ms)
 
 Commande :
 ```bash
@@ -52,6 +53,16 @@ Downloads :
 node --loader ts-node/esm src/client/client.ts get remote/file.txt ./local/file.txt
 ```
 
+Suppression :
+```bash
+node --loader ts-node/esm src/client/client.ts del remote/file.txt
+```
+
+Informations serveur :
+```bash
+node --loader ts-node/esm src/client/client.ts info
+```
+
 Listing :
 ```bash
 node --loader ts-node/esm src/client/client.ts list .
@@ -62,7 +73,7 @@ Fermeture de session : la commande BYE est envoyée automatiquement en fin d'ex�
 ## Synchronisation de dossier
 L'utilitaire `syncDirectory` parcourt récursivement un dossier local et uploade chaque fichier. Exemple d'exécution :
 ```bash
-node --loader ts-node/esm -e "import { LeoClient } from './src/client/client.ts'; import { syncDirectory } from './src/client/sync.ts'; (async () => { const client = new LeoClient(); await client.connect(process.env.LEO_HOST ?? '127.0.0.1', Number(process.env.LEO_PORT ?? '9000')); const ok = await client.auth(process.env.LEO_USER ?? 'user', process.env.LEO_PASS ?? 'pass'); if (!ok) throw new Error('AUTH failed'); await syncDirectory(client, './local-folder', 'remote-prefix'); await client.bye(); })();"
+node --loader ts-node/esm -e "import { LeoClient } from './src/client/client.ts'; import { syncDirectory } from './src/client/sync.ts'; (async () => { const client = new LeoClient(); await client.connect(process.env.LEO_HOST ?? '127.0.0.1', Number(process.env.LEO_PORT ?? '9000')); await client.auth(process.env.LEO_USER ?? 'user', process.env.LEO_PASS ?? 'pass'); await syncDirectory(client, './local-folder', 'remote-prefix'); await client.bye(); })();"
 ```
 
 ## Résumé du protocole
@@ -75,7 +86,12 @@ node --loader ts-node/esm -e "import { LeoClient } from './src/client/client.ts'
 - PUT séquencé avec `PUT_BEGIN`, `PUT_CHUNK`, `PUT_END` puis `PUT_OK`.
 - GET séquencé avec `GET_BEGIN`, `GET_META`, `GET_CHUNK...`, `GET_END`.
 - LIST `{ type: "LIST", path }` réponse `LIST_RESULT`.
+- DEL `{ type: "DEL", path }` réponse `DEL_OK` ou `DEL_ERROR`.
+- INFO `{ type: "INFO" }` réponse `INFO_RESULT` avec version et capacités.
 - BYE `{ type: "BYE" }`.
+
+## Logs serveur
+Les logs sont émis au format JSON sur la sortie standard/erreur. Chaque entrée contient un `ts`, un `level`, un `context` et des métadonnées (session, commande, erreur). Ils permettent de tracer les connexions, AUTH, PUT/GET/LIST/DEL/INFO et les erreurs internes.
 
 ## Tests
 ```bash
