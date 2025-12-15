@@ -5,6 +5,7 @@
     "moduleResolution": "nodenext",
     "strict": true,
     "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
     "types": ["node"],
     "skipLibCheck": true,
     "lib": ["esnext"],

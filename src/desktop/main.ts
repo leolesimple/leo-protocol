@@ -40,11 +40,7 @@ ipcMain.handle("leo-connect", async (event, payload: ConnectPayload): Promise<Re
   try {
     const client = new LeoClient()
     await client.connect(payload.host, payload.port)
-    const ok = await client.auth(payload.username, payload.password)
-    if (!ok) {
-      await client.bye()
-      return { ok: false, error: "AUTH failed" }
-    }
+    await client.auth(payload.username, payload.password)
     const existing = clients.get(event.sender.id)
     if (existing) await existing.bye()
     clients.set(event.sender.id, client)

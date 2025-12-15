@@ -29,10 +29,23 @@ export type GetChunk = { type: "GET_CHUNK"; path: string; offset: number; data: 
 export type GetEnd = { type: "GET_END"; path: string }
 export type List = { type: "LIST"; path: string }
 export type ListResult = { type: "LIST_RESULT"; path: string; items: Array<{ name: string; type: "file" | "dir"; size?: number }> }
+export type Del = { type: "DEL"; path: string }
+export type DelResult = { type: "DEL_OK"; path: string } | { type: "DEL_ERROR"; path: string; errorCode: string; message: string; error?: string }
+export type Info = { type: "INFO" }
+export type InfoResult = {
+  type: "INFO_RESULT"
+  version: string
+  protocolVersion: number
+  capabilities: string[]
+  storageRoot?: string
+  maxUploadSize?: number
+}
 export type Bye = { type: "BYE" }
-export type AuthResult = { type: "AUTH_OK" } | { type: "AUTH_ERROR"; error: string }
+export type AuthResult =
+  | { type: "AUTH_OK" }
+  | { type: "AUTH_ERROR"; error: string; errorCode: string; message?: string; details?: string }
 export type PutAck = { type: "PUT_OK"; path: string }
-export type ErrorMessage = { type: "ERROR"; error: string }
+export type ErrorMessage = { type: "ERROR"; error: string; errorCode: string; message: string; details?: string }
 
 export type LeoMessage =
   | AuthCommand
@@ -45,6 +58,10 @@ export type LeoMessage =
   | GetEnd
   | List
   | ListResult
+  | Del
+  | DelResult
+  | Info
+  | InfoResult
   | Bye
   | AuthResult
   | PutAck
